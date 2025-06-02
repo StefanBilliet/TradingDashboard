@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+  pull_request:
+    paths:
+      - 'backend/**'
+  workflow_dispatch:  # allow manual runs
+
+jobs:
+  build-api:
+    name: Build & Test .NET API
+    runs-on: ubuntu-latest
+
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(join(github.event.commits.*.added, ''), 'backend/') ||
+      contains(join(github.event.commits.*.modified, ''), 'backend/') ||
+      contains(join(github.event.commits.*.removed, ''), 'backend/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore packages (cache NuGet)
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/backend/**/package.lock.json', '**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: dotnet restore
+        run: dotnet restore backend/TradingDashboard.slnx
+
+      - name: dotnet build
+        run: dotnet build backend/TradingDashboard.slnx --configuration Release --no-restore
+
+      - name: dotnet test
+        run: dotnet test backend/Tests/Tests.csproj --no-build --configuration Release

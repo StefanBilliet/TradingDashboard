@@ -14,12 +14,6 @@ jobs:
     name: Build & Test .NET API
     runs-on: ubuntu-latest
 
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      contains(join(github.event.commits.*.added, ''), 'backend/') ||
-      contains(join(github.event.commits.*.modified, ''), 'backend/') ||
-      contains(join(github.event.commits.*.removed, ''), 'backend/')
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

@@ -10,7 +10,7 @@ public record IndividualPosition
 
 public record DisplayAndFormat
 {
-    public string Description { get; init; }
-    public string Symbol { get; init; }
-    public string UnderlyingInstrumentDescription { get; init; }
+    public required string Description { get; init; }
+    public required string Symbol { get; init; }
+    public required string UnderlyingInstrumentDescription { get; init; }
 }

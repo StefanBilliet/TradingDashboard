@@ -5,11 +5,11 @@ namespace Tests.PositionsApi;
 public record PositionBase
 {
     public required string AccountId { get; init; }
-    public required string AssetType { get; init; }
+    public required AssetType AssetType { get; init; }
     public required int Uic { get; init; }
     public required double Amount { get; init; }
     public required decimal OpenPrice { get; init; }
-    public required string Status { get; init; }
+    public required PositionStatus Status { get; init; }
     public Guid CorrelationKey { get; init; }
     public string? AccountKey { get; init; }
     public bool CanBeClosed { get; init; }

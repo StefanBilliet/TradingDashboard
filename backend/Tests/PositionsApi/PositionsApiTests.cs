@@ -83,12 +83,12 @@ public sealed class PositionsApiTests : IAsyncLifetime
                     AccountKey = "abc123",
                     AccountId = "99999999",
                     ClientId = "99999999",
-                    AssetType = "StockOption",
+                    AssetType = AssetType.StockOption,
                     Uic = 49862353,
                     Amount = -1,
                     OpenPrice = 13.95m,
                     OpenPriceIncludingCosts = 13.9195m,
-                    Status = "Open",
+                    Status = PositionStatus.Open,
                     CorrelationKey = Guid.Parse("25c8f0e8-f432-4ab2-8c6b-e351b282c42c"),
                     CanBeClosed = true,
                     ExecutionTimeOpen = new DateTime(2025,6,2,14,27,29,144,DateTimeKind.Utc),
@@ -106,6 +106,12 @@ public sealed class PositionsApiTests : IAsyncLifetime
                         SettlementStyle= "PhysicalDelivery",
                         Strike= 587
                     }
+                },
+                DisplayAndFormat = new DisplayAndFormat
+                {
+                    Description = "SPDR S&P 500 ETF Trust Jul2025 587 C",
+                    Symbol = "SPY/11N25C587:xcbf",
+                    UnderlyingInstrumentDescription = "SPDR S&P 500 ETF Trust"
                 }
             },
             new IndividualPosition
@@ -117,12 +123,12 @@ public sealed class PositionsApiTests : IAsyncLifetime
                     AccountKey = "abc123",
                     AccountId = "99999999",
                     ClientId = "99999999",
-                    AssetType = "StockOption",
+                    AssetType = AssetType.StockOption,
                     Uic = 49862358,
                     Amount = 1,
                     OpenPrice = 14.64m,
                     OpenPriceIncludingCosts = 14.6705m,
-                    Status = "Open",
+                    Status = PositionStatus.Open,
                     CorrelationKey = Guid.Parse("25c8f0e8-f432-4ab2-8c6b-e351b282c42c"),
                     CanBeClosed = true,
                     ExecutionTimeOpen = new DateTime(2025,6,2,14,27,29,144,DateTimeKind.Utc),
@@ -140,6 +146,12 @@ public sealed class PositionsApiTests : IAsyncLifetime
                         SettlementStyle= "PhysicalDelivery",
                         Strike= 586
                     }
+                },
+                DisplayAndFormat = new DisplayAndFormat()
+                {
+                    Description = "SPDR S&P 500 ETF Trust Jul2025 586 C",
+                    Symbol = "SPY/11N25C586:xcbf",
+                    UnderlyingInstrumentDescription = "SPDR S&P 500 ETF Trust"
                 }
             }
         ]));

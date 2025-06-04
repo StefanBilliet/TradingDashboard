@@ -5,7 +5,7 @@ using WebApi.Features.GetPositionsPortfolio.Data;
 using WebApi.Features.GetPositionsPortfolio.Data.ReadModels;
 using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
-namespace Tests;
+namespace Tests.WebApi.Features.GetPositionsPortfolio.Data;
 
 public class PositionsPortfolioDataServiceTests
 {

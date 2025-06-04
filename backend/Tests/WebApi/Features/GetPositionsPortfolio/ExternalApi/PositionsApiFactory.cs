@@ -2,7 +2,7 @@ using System.Text.Json;
 using Refit;
 using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
-namespace Tests.PositionsApi;
+namespace Tests.WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public sealed class PositionsApiFactory : IDisposable
 {

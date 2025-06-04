@@ -7,7 +7,7 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 
-namespace Tests.PositionsApi;
+namespace Tests.WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public sealed class PositionsApiTests : IAsyncLifetime
 {

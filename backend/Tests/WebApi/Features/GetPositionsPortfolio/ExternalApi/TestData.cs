@@ -1,4 +1,4 @@
-namespace Tests.PositionsApi;
+namespace Tests.WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public static class TestData
 {

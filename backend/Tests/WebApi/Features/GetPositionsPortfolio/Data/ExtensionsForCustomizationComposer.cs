@@ -2,7 +2,7 @@ using AutoFixture;
 using AutoFixture.Dsl;
 using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
-namespace Tests;
+namespace Tests.WebApi.Features.GetPositionsPortfolio.Data;
 
 public static class ExtensionsForCustomizationComposer
 {

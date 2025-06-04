@@ -68,54 +68,7 @@ public sealed class PositionsApiTests : IAsyncLifetime
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("""
-
-                          {
-                            "Data": [
-                              {
-                                "NetPositionId": "SPY_PUT_560_565_Net",
-                                "PositionBase": {
-                                  "AccountId": "SIM-12345678-90AB-CDEF-1234-567890ABCDEF",
-                                  "AssetType": "Option",
-                                  "Uic": 38765,
-                                  "OptionType": "Put",
-                                  "Strike": 565.0,
-                                  "ExpiryDate": "2025-07-11T22:00:00Z",
-                                  "Amount": -1,
-                                  "OpenPrice": 1.50,
-                                  "Status": "Open"
-                                },
-                                "PositionId": "POS-SIM-0001",
-                                "PositionView": {
-                                  "Bid": 1.45,
-                                  "Ask": 1.55,
-                                  "Mid": 1.50
-                                }
-                              },
-                              {
-                                "NetPositionId": "SPY_PUT_560_565_Net",
-                                "PositionBase": {
-                                  "AccountId": "SIM-12345678-90AB-CDEF-1234-567890ABCDEF",
-                                  "AssetType": "Option",
-                                  "Uic": 38764,
-                                  "OptionType": "Put",
-                                  "Strike": 560.0,
-                                  "ExpiryDate": "2025-07-11T22:00:00Z",
-                                  "Amount": 1,
-                                  "OpenPrice": 2.00,
-                                  "Status": "Open"
-                                },
-                                "PositionId": "POS-SIM-0002",
-                                "PositionView": {
-                                  "Bid": 1.95,
-                                  "Ask": 2.05,
-                                  "Mid": 2.00
-                                }
-                              }
-                            ]
-                          }
-
-                          """));
+                .WithBody(TestData.SpyBullCall));
         var sut = _positionsApiFactory.Create(_saxoMockServer.Urls[0], ClientKey);
 
         var positions = await sut.GetPositions(CancellationToken.None);
@@ -123,48 +76,70 @@ public sealed class PositionsApiTests : IAsyncLifetime
         positions.ShouldBeEquivalentTo(new SaxoResponse<IndividualPosition[]>([
             new IndividualPosition
             {
-                NetPositionId = "SPY_PUT_560_565_Net",
-                PositionId = "POS-SIM-0001",
+                NetPositionId = "49862353__CO__S",
+                PositionId = "5023725059",
                 PositionBase = new PositionBase
                 {
-                    AccountId = "SIM-12345678-90AB-CDEF-1234-567890ABCDEF",
-                    AssetType = "Option",
-                    Uic = 38765,
-                    OptionType = "Put",
-                    Strike = 565.0,
-                    ExpiryDate = new DateTime(2025, 7, 11, 22, 0, 0, DateTimeKind.Utc),
+                    AccountKey = "abc123",
+                    AccountId = "99999999",
+                    ClientId = "99999999",
+                    AssetType = "StockOption",
+                    Uic = 49862353,
                     Amount = -1,
-                    OpenPrice = 1.50,
-                    Status = "Open"
-                },
-                PositionView = new PositionView
-                {
-                    Ask = 1.55,
-                    Bid = 1.45,
-                    Mid = 1.50,
+                    OpenPrice = 13.95m,
+                    OpenPriceIncludingCosts = 13.9195m,
+                    Status = "Open",
+                    CorrelationKey = Guid.Parse("25c8f0e8-f432-4ab2-8c6b-e351b282c42c"),
+                    CanBeClosed = true,
+                    ExecutionTimeOpen = new DateTime(2025,6,2,14,27,29,144,DateTimeKind.Utc),
+                    OpenBondPoolFactor = 1,
+                    RelatedOpenOrders = [],
+                    SourceOrderId = "5035095572",
+                    ValueDate = new DateTime(2025,6,2,0,0,0,DateTimeKind.Utc),
+                    OptionsData = new OptionsData
+                    {
+                        CanBeExercised= false,
+                        ExerciseStyle= "American",
+                        ExpiryCut= "None",
+                        ExpiryDate= new DateTime(2025,07,11,0,0,0,DateTimeKind.Utc),
+                        PutCall= "Call",
+                        SettlementStyle= "PhysicalDelivery",
+                        Strike= 587
+                    }
                 }
             },
             new IndividualPosition
             {
-                NetPositionId = "SPY_PUT_560_565_Net",
-                PositionId = "POS-SIM-0002",
+                NetPositionId = "49862358__CO__L",
+                PositionId = "5023725057",
                 PositionBase = new PositionBase
                 {
-                    AccountId = "SIM-12345678-90AB-CDEF-1234-567890ABCDEF",
-                    AssetType = "Option",
-                    Uic = 38764,
-                    OptionType = "Put",
-                    Strike = 560.0,
-                    OpenPrice = 2.00,
-                    Status = "Open",
+                    AccountKey = "abc123",
+                    AccountId = "99999999",
+                    ClientId = "99999999",
+                    AssetType = "StockOption",
+                    Uic = 49862358,
                     Amount = 1,
-                    ExpiryDate = new DateTime(2025, 7, 11, 22, 0, 0, DateTimeKind.Utc)
-                },
-                PositionView = new PositionView
-                {
-                    Ask = 2.05,
-                    Bid = 1.95,
-                    Mid = 2.00,
+                    OpenPrice = 14.64m,
+                    OpenPriceIncludingCosts = 14.6705m,
+                    Status = "Open",
+                    CorrelationKey = Guid.Parse("25c8f0e8-f432-4ab2-8c6b-e351b282c42c"),
+                    CanBeClosed = true,
+                    ExecutionTimeOpen = new DateTime(2025,6,2,14,27,29,144,DateTimeKind.Utc),
+                    OpenBondPoolFactor = 1,
+                    RelatedOpenOrders = [],
+                    SourceOrderId = "5035095571",
+                    ValueDate = new DateTime(2025,6,2,0,0,0,DateTimeKind.Utc),
+                    OptionsData = new OptionsData
+                    {
+                        CanBeExercised= true,
+                        ExerciseStyle= "American",
+                        ExpiryCut= "None",
+                        ExpiryDate= new DateTime(2025,07,11,0,0,0,DateTimeKind.Utc),
+                        PutCall= "Call",
+                        SettlementStyle= "PhysicalDelivery",
+                        Strike= 586
+                    }
                 }
             }
         ]));

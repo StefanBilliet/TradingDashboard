@@ -1,9 +1,7 @@
 using AutoFixture;
-using AutoFixture.Xunit3;
 using FakeItEasy;
 using Shouldly;
 using Tests.PositionsApi;
-using Vogen;
 
 namespace Tests;
 
@@ -50,54 +48,10 @@ public class PositionsPortfolioDataServiceTests
     public async Task GIVEN_two_unrelated_positions_in_the_portfolio_WHEN_Get_THEN_returns_portfolio_with_two_separate_positions()
     {
         var shortCall = _fixture.Build<IndividualPosition>()
-            .With(
-                position => position.PositionBase, _fixture.Build<PositionBase>()
-                    .With(@base => @base.AssetType, AssetType.StockOption)
-                    .With(@base => @base.Amount, -1)
-                    .With(@base => @base.OpenPrice, 13.95m)
-                    .With(@base => @base.OpenPriceIncludingCosts, 13.9195m)
-                    .With(@base => @base.Status, PositionStatus.Open)
-                    .With(@base => @base.ValueDate, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc))
-                    .With(@base => @base.OptionsData, _fixture
-                        .Build<OptionsData>()
-                        .With(optionsData => optionsData.Strike, 587)
-                        .With(optionsData => optionsData.ExpiryDate, new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc))
-                        .With(optionsData => optionsData.PutCall, "Call")
-                        .Create()
-                    )
-                    .Create()
-            )
-            .With(position => position.DisplayAndFormat, _fixture
-                .Build<DisplayAndFormat>()
-                .With(displayAndFormat => displayAndFormat.Symbol, "SPY/11N25C587:xcbf")
-                .With(displayAndFormat => displayAndFormat.Description, "SPDR S&P 500 ETF Trust Jul2025 587 C")
-                .With(displayAndFormat => displayAndFormat.UnderlyingInstrumentDescription, "SPDR S&P 500 ETF Trust")
-                .Create())
+            .AsShortCall()
             .Create();
         var longCall = _fixture.Build<IndividualPosition>()
-            .With(
-                position => position.PositionBase, _fixture.Build<PositionBase>()
-                    .With(@base => @base.AssetType, AssetType.StockOption)
-                    .With(@base => @base.Amount, 1)
-                    .With(@base => @base.OpenPrice, 14.64m)
-                    .With(@base => @base.OpenPriceIncludingCosts, 14.6705m)
-                    .With(@base => @base.Status, PositionStatus.Open)
-                    .With(@base => @base.ValueDate, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Utc))
-                    .With(@base => @base.OptionsData, _fixture
-                        .Build<OptionsData>()
-                        .With(optionsData => optionsData.Strike, 586)
-                        .With(optionsData => optionsData.ExpiryDate, new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Utc))
-                        .With(optionsData => optionsData.PutCall, "Call")
-                        .Create()
-                    )
-                    .Create()
-            )
-            .With(position => position.DisplayAndFormat, _fixture
-                .Build<DisplayAndFormat>()
-                .With(displayAndFormat => displayAndFormat.Symbol, "SPY/11N25C586:xcbf")
-                .With(displayAndFormat => displayAndFormat.Description, "SPDR S&P 500 ETF Trust Jul2025 586 C")
-                .With(displayAndFormat => displayAndFormat.UnderlyingInstrumentDescription, "SPDR S&P 500 ETF Trust")
-                .Create())
+            .AsLongCall()
             .Create();
         var positionsResponse = new SaxoResponse<IndividualPosition[]>([shortCall, longCall]);
         A.CallTo(() => _positionsApi.GetPositions(A<CancellationToken>.Ignored)).Returns(positionsResponse);

@@ -78,6 +78,42 @@ public class PositionsPortfolioDataServiceTests
             ))
         });
     }
+
+    [Fact]
+    public async Task GIVEN_two_related_positions_in_the_portfolio_WHEN_Get_THEN_returns_portfolio_with_one_combined_position()
+    {
+        var correlationKey = new Guid("AEFD9794-1863-4736-BDF0-B2BA2FF21654");
+        var shortCall = _fixture.Build<IndividualPosition>()
+            .AsShortCall(correlationKey)
+            .Create();
+        var longCall = _fixture.Build<IndividualPosition>()
+            .AsLongCall(correlationKey)
+            .Create();
+        var positionsResponse = new SaxoResponse<IndividualPosition[]>([shortCall, longCall]);
+        A.CallTo(() => _positionsApi.GetPositions(A<CancellationToken>.Ignored)).Returns(positionsResponse);
+
+        var result = await _sut.Get(CancellationToken.None);
+
+        result.Positions.ShouldBeEquivalentTo(new[]
+        {
+            new Position(new Leg(
+                    shortCall.DisplayAndFormat.Symbol,
+                    shortCall.PositionBase.OptionsData!.Strike,
+                    shortCall.PositionBase.Amount,
+                    shortCall.PositionBase.OpenPriceIncludingCosts,
+                    shortCall.PositionBase.Status,
+                    shortCall.PositionBase.CorrelationKey
+                ),
+                new Leg(
+                    longCall.DisplayAndFormat.Symbol,
+                    longCall.PositionBase.OptionsData!.Strike,
+                    longCall.PositionBase.Amount,
+                    longCall.PositionBase.OpenPriceIncludingCosts,
+                    longCall.PositionBase.Status,
+                    longCall.PositionBase.CorrelationKey
+                ))
+        });
+    }
 }
 
 public record Leg(string Symbol, decimal Strike, double Amount, decimal OpenPriceIncludingCosts, PositionStatus Status, Guid CorrelationKey);
@@ -97,9 +133,12 @@ public class PositionsPortfolioDataService
 
         return new PositionsPortfolio(positionsResponse.Data
             .Where(position => position.PositionBase.AssetType == AssetType.StockOption)
-            .Select(position => new Position(
-                new Leg(position.DisplayAndFormat.Symbol, position.PositionBase.OptionsData!.Strike, position.PositionBase.Amount,
-                    position.PositionBase.OpenPriceIncludingCosts, position.PositionBase.Status, position.PositionBase.CorrelationKey)
+            .GroupBy(position => position.PositionBase.CorrelationKey)
+            .Select(positionGroup => new Position(
+                positionGroup.Select(position => new Leg(position.DisplayAndFormat.Symbol, position.PositionBase.OptionsData!.Strike,
+                        position.PositionBase.Amount,
+                        position.PositionBase.OpenPriceIncludingCosts, position.PositionBase.Status, position.PositionBase.CorrelationKey))
+                    .ToArray()
             )).ToArray()
         );
     }

@@ -8,11 +8,12 @@ public static class ExtensionsForCustomizationComposer
 {
     private static readonly IFixture Fixture = new Fixture();
     
-    public static IPostprocessComposer<IndividualPosition> AsShortCall(this ICustomizationComposer<IndividualPosition> composer)
+    public static IPostprocessComposer<IndividualPosition> AsShortCall(this ICustomizationComposer<IndividualPosition> composer, Guid? correlationKey = null)
     {
         return composer
             .With(
                 position => position.PositionBase, Fixture.Build<PositionBase>()
+                    .With(@base => @base.CorrelationKey, correlationKey ?? Guid.NewGuid())
                     .With(@base => @base.AssetType, AssetType.StockOption)
                     .With(@base => @base.Amount, -1)
                     .With(@base => @base.OpenPrice, 13.95m)
@@ -36,11 +37,12 @@ public static class ExtensionsForCustomizationComposer
                 .Create());
     }
     
-    public static IPostprocessComposer<IndividualPosition> AsLongCall(this ICustomizationComposer<IndividualPosition> composer)
+    public static IPostprocessComposer<IndividualPosition> AsLongCall(this ICustomizationComposer<IndividualPosition> composer, Guid? correlationKey = null)
     {
         return composer
             .With(
                 position => position.PositionBase, Fixture.Build<PositionBase>()
+                    .With(@base => @base.CorrelationKey, correlationKey ?? Guid.NewGuid())
                     .With(@base => @base.AssetType, AssetType.StockOption)
                     .With(@base => @base.Amount, 1)
                     .With(@base => @base.OpenPrice, 14.64m)

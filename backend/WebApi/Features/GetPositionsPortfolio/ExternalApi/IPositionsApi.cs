@@ -1,6 +1,6 @@
 using Refit;
 
-namespace Tests.PositionsApi;
+namespace WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public interface IPositionsApi
 {

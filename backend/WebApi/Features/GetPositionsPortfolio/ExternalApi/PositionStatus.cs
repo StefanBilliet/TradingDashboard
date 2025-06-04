@@ -1,6 +1,6 @@
 using Vogen;
 
-namespace Tests;
+namespace WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 [ValueObject<string>]
 public readonly partial struct PositionStatus 

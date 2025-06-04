@@ -1,6 +1,6 @@
 using AutoFixture;
 using AutoFixture.Dsl;
-using Tests.PositionsApi;
+using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 namespace Tests;
 

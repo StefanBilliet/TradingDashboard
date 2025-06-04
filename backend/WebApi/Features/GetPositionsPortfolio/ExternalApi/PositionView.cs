@@ -1,4 +1,4 @@
-namespace Tests.PositionsApi;
+namespace WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public record PositionView
 {

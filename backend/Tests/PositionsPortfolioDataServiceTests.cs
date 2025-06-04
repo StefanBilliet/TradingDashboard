@@ -1,7 +1,9 @@
 using AutoFixture;
 using FakeItEasy;
 using Shouldly;
-using Tests.PositionsApi;
+using WebApi.Features.GetPositionsPortfolio.Data;
+using WebApi.Features.GetPositionsPortfolio.Data.ReadModels;
+using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 namespace Tests;
 
@@ -116,36 +118,3 @@ public class PositionsPortfolioDataServiceTests
     }
 }
 
-public record Leg(string Symbol, decimal Strike, double Amount, decimal OpenPriceIncludingCosts, PositionStatus Status, Guid CorrelationKey);
-
-public class PositionsPortfolioDataService
-{
-    private readonly IPositionsApi _positionsApi;
-
-    public PositionsPortfolioDataService(IPositionsApi positionsApi)
-    {
-        _positionsApi = positionsApi;
-    }
-
-    public async Task<PositionsPortfolio> Get(CancellationToken cancellationToken)
-    {
-        var positionsResponse = await _positionsApi.GetPositions(cancellationToken);
-
-        return new PositionsPortfolio(positionsResponse.Data
-            .Where(position => position.PositionBase.AssetType == AssetType.StockOption)
-            .GroupBy(position => position.PositionBase.CorrelationKey)
-            .Select(positionGroup => new Position(
-                positionGroup.Select(position => new Leg(position.DisplayAndFormat.Symbol, position.PositionBase.OptionsData!.Strike,
-                        position.PositionBase.Amount,
-                        position.PositionBase.OpenPriceIncludingCosts, position.PositionBase.Status, position.PositionBase.CorrelationKey))
-                    .ToArray()
-            )).ToArray()
-        );
-    }
-}
-
-public record PositionsPortfolio(params Position[] Positions)
-{
-}
-
-public record Position(params Leg[] Legs);

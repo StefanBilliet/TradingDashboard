@@ -1,6 +1,7 @@
 using System.Net;
 using Refit;
 using Shouldly;
+using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;

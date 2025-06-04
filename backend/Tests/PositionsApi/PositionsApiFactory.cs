@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Refit;
+using WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 namespace Tests.PositionsApi;
 

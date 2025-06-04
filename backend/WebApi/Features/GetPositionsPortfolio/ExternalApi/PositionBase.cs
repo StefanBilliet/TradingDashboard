@@ -1,6 +1,4 @@
-using System.Text.Json.Serialization;
-
-namespace Tests.PositionsApi;
+namespace WebApi.Features.GetPositionsPortfolio.ExternalApi;
 
 public record PositionBase
 {
